@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+mlflow.db
+mlruns/
+  .ipynb_checkpoints/
+*.png
+*.mp4 
+notebooks/mlruns/
