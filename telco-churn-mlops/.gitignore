@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+mlflow.db
+mlruns/
+  .ipynb_checkpoints/
+*.png
+*.mp4 
+notebooks/mlruns/
+venv/
+.pytest_cache/
+notebooks/mlflow.db
+.env

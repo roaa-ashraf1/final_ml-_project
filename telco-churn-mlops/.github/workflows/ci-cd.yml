@@ -1,0 +1,64 @@
+name: Telco Churn ML CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Automated API & Model Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Run Pytest
+        run: pytest -v
+
+  docker-build-and-smoke-test:
+    name: Build and Smoke Test Docker Container
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t telco-churn-api:${{ github.sha }} .
+
+      - name: Start container
+        run: docker run -d --name telco-ci-container -p 8000:8000 telco-churn-api:${{ github.sha }}
+
+      - name: Wait for API startup
+        run: sleep 5
+
+      - name: Smoke test API endpoint
+        run: |
+          python -c "import urllib.request; res = urllib.request.urlopen('http://127.0.0'); assert res.status == 200; print('API Health Check Passed!')"
+
+      - name: Show container logs
+        if: always()
+        run: docker logs telco-ci-container || true
+
+      - name: Remove test container
+        if: always()
+        run: docker rm -f telco-ci-container || true
