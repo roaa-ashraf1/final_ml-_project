@@ -61,7 +61,7 @@ def model_info():
         "model_name": "telco_churn_classifier",
         "model_version": "1.0.0",
         "model_type": "XGBClassifier (Pipeline)",
-        "number_of_features": len(feature_cols),
+        "number_of_features": len(CustomerData.model_fields),
         "classes":
             [
                 "no",
