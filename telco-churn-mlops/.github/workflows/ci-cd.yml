@@ -31,7 +31,7 @@ jobs:
         run: pip install -r requirements-dev.txt
 
       - name: Run Pytest
-        run: pytest -v
+        run: python -m pytest -v
 
   docker-build-and-smoke-test:
     name: Build and Smoke Test Docker Container
