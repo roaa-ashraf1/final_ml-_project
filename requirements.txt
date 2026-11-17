@@ -1,9 +1,0 @@
-fastapi==0.115.0
-uvicorn
-pandas
-numpy
-scikit-learn
-httpx==0.27.2
-joblib
-pytest
-starlette==0.38.6
