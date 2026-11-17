@@ -46,8 +46,9 @@ jobs:
           if [ -d "telco-churn-mlops" ]; then cd telco-churn-mlops; fi
           docker build -t telco-churn-api:${{ github.sha }} .
           docker run -d --name telco-ci-container -p 8000:8000 telco-churn-api:${{ github.sha }}
-          sleep 5
+          sleep 15
           python -c "import urllib.request; res = urllib.request.urlopen('http://127.0.0'); assert res.status == 200; print('API Health Check Passed!')"
+
 
       - name: Show container logs
         if: always()
